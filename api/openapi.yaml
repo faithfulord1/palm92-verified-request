@@ -1,0 +1,122 @@
+openapi: 3.1.0
+info:
+  title: Palm92 Verified Request API
+  version: 0.1.0
+  description: Evidence-first API for verifying whether high-risk requests were authorised.
+servers:
+  - url: https://api.example.invalid
+    description: Placeholder until deployment
+paths:
+  /v1/verify:
+    post:
+      summary: Verify a high-risk request
+      operationId: verifyRequest
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verification_id:
+                  type: string
+                text:
+                  type: string
+                organisation_hint:
+                  type: string
+                payment_destination:
+                  type: string
+              additionalProperties: false
+      responses:
+        "200":
+          description: Verification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerificationResult"
+  /v1/verification/{id}:
+    get:
+      summary: Get a verification record
+      operationId: getVerificationRecord
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Verification record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerificationResult"
+  /v1/organisations:
+    post:
+      summary: Register an organisation
+      operationId: createOrganisation
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "201":
+          description: Organisation created
+  /v1/organisations/{id}/requests:
+    post:
+      summary: Create an authorised request
+      operationId: createAuthorisedRequest
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Authorised request created
+  /v1/human-review:
+    post:
+      summary: Request human review
+      operationId: requestHumanReview
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "202":
+          description: Review queued
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    VerificationResult:
+      type: object
+      required:
+        - status
+        - reasons
+      properties:
+        status:
+          type: string
+          enum:
+            - VERIFIED
+            - NOT_VERIFIED
+            - CONFLICT
+            - INSUFFICIENT_EVIDENCE
+        reasons:
+          type: array
+          items:
+            type: string
+        verification_id:
+          type: string
+        evidence:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        human_review_required:
+          type: boolean
+      additionalProperties: false
