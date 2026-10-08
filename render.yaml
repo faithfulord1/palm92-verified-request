@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: palm92-verified-request-regional
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: regional
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
