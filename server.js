@@ -29,9 +29,10 @@ async function createOrder(amount,currency,reference) {
 }
 const server = http.createServer(async (req,res)=>{
   try {
-    if (req.method==='GET' && req.url==='/api/health') return json(res,200,{ok:true,mode:'sandbox',paypalConfigured:Boolean(CLIENT_ID&&CLIENT_SECRET),principle:'AI investigates. Humans decide.'});
-    if (req.method==='GET' && req.url==='/api/audit') return json(res,200,{records});
-    if (req.method==='POST' && req.url==='/api/decision') {
+    const pathname = new URL(req.url, 'http://localhost').pathname;
+    if (req.method==='GET' && pathname==='/api/health') return json(res,200,{ok:true,mode:'sandbox',paypalConfigured:Boolean(CLIENT_ID&&CLIENT_SECRET),principle:'AI investigates. Humans decide.'});
+    if (req.method==='GET' && pathname==='/api/audit') return json(res,200,{records});
+    if (req.method==='POST' && pathname==='/api/decision') {
       const b=await body(req); const decision=String(b.decision||'').toUpperCase();
       if (!['APPROVE','REJECT'].includes(decision)) return json(res,400,{error:'Decision must be APPROVE or REJECT'});
       const amount=Number(b.amount); if(!Number.isFinite(amount)||amount<=0) return json(res,400,{error:'Enter a valid positive amount'});
@@ -43,9 +44,11 @@ const server = http.createServer(async (req,res)=>{
       return json(res,200,{record,message:'Human approval recorded. PayPal Sandbox order created.'});
     }
     if (req.method==='GET') {
-      let p=req.url==='/'?'/index.html':req.url; p=p.split('?')[0];
-      const file=path.join(__dirname,'public',p); if(!file.startsWith(path.join(__dirname,'public'))) return json(res,403,{error:'Forbidden'});
-      if(fs.existsSync(file)&&fs.statSync(file).isFile()){const ext=path.extname(file); const types={'.html':'text/html','.css':'text/css','.js':'text/javascript'};res.writeHead(200,{'Content-Type':types[ext]||'text/plain'});return fs.createReadStream(file).pipe(res);}
+      const requestedPath = pathname==='/' ? '/index.html' : pathname;
+      const publicDir = path.join(__dirname,'public');
+      const file = path.resolve(publicDir, '.' + requestedPath);
+      if(!file.startsWith(publicDir + path.sep)) return json(res,403,{error:'Forbidden'});
+      if(fs.existsSync(file)&&fs.statSync(file).isFile()){const ext=path.extname(file); const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};res.writeHead(200,{'Content-Type':types[ext]||'text/plain'});return fs.createReadStream(file).pipe(res);}
     }
     json(res,404,{error:'Not found'});
   } catch(e) { json(res,500,{error:e.message}); }
