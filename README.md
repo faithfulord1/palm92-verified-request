@@ -27,7 +27,7 @@ Browser → POST /api/requests → fixed fictional registry → five determinist
                                    per-case hash-linked audit export
 ```
 
-`gate.js` holds the registry fixture, checks and state transitions. `server.js` serves the UI and API. `public/` is the accessible explanatory layer. `test/` exercises permitted, blocked, rejected and invalid decision paths.
+`gate.js` holds the registry fixture, checks and state transitions. `server.js` serves the UI and API. `public/` is the accessible explanatory layer. `test/` exercises permitted, blocked, rejected and invalid decision paths. `paypal-sandbox.js` preserves the previous Sandbox order adapter but is intentionally **not wired to an endpoint** until reviewer authentication and approved-parameter binding are implemented.
 
 ## API
 
@@ -62,4 +62,4 @@ The reviewer field is **an unverified label**. The hash chain detects some accid
 
 **Project:** Palm92 Verified Request, the Authority Gate. **Problem:** Agents and people may have system access or receive convincing requests without authority to carry out the specific action. **Demo:** A fictional payment request is checked against a controlled registry and policy, stopped pending human approval, then permitted only as a simulation or blocked with an evidence trail. **Next integration:** PayPal Sandbox order creation only after authenticated approval and binding of the approved details to the execution request. Sandbox integration is planned, not shown in this demo.
 
-**Status:** WORKING DEMO locally. **Outstanding for PayPal submission:** authenticated approval, persistent audit store, safe Sandbox execution adapter, recorded screenshots/video, eligibility and current deadline verification, submission form. No submission or external action has occurred.
+**Status:** WORKING Authority Gate demo locally. **Outstanding for PayPal submission:** authenticated approval, persistent audit store, binding the preserved Sandbox adapter to the approved request, a meaningful AI function, recorded screenshots/video and submission form. No submission or external action has occurred.
