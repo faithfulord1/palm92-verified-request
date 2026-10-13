@@ -1,7 +1,1 @@
-{
-  "name": "palm92-verified-pay",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {"start": "node server.js"},
-  "engines": {"node": ">=18"}
-}
+{"name":"palm92-verified-request-demo","version":"0.2.0","private":true,"scripts":{"start":"node server.js","test":"node --test"},"engines":{"node":">=18"}}
