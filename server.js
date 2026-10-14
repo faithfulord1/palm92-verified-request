@@ -1,16 +1,26 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const PORT = process.env.PORT || 3000;
-const PAYPAL_BASE = process.env.PAYPAL_BASE_URL || 'https://api-m.sandbox.paypal.com';
+const PAYPAL_BASE = 'https://api-m.sandbox.paypal.com';
 const CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
+const ADMIN_API_TOKEN = process.env.ADMIN_API_TOKEN;
 const records = [];
 
 function json(res, status, body) {
   res.writeHead(status, {'Content-Type':'application/json','Cache-Control':'no-store'});
   res.end(JSON.stringify(body));
+}
+function authorised(req) {
+  if (!ADMIN_API_TOKEN || Buffer.byteLength(ADMIN_API_TOKEN) < 32) return false;
+  const header = req.headers.authorization || '';
+  if (!header.startsWith('Bearer ')) return false;
+  const supplied = Buffer.from(header.slice(7));
+  const expected = Buffer.from(ADMIN_API_TOKEN);
+  return supplied.length === expected.length && crypto.timingSafeEqual(supplied, expected);
 }
 function body(req) { return new Promise((resolve,reject)=>{let d=''; req.on('data',c=>{d+=c;if(d.length>1e6) reject(new Error('too large'));});req.on('end',()=>{try{resolve(d?JSON.parse(d):{})}catch(e){reject(e)}});req.on('error',reject);}); }
 async function token() {
@@ -30,7 +40,8 @@ async function createOrder(amount,currency,reference) {
 const server = http.createServer(async (req,res)=>{
   try {
     const pathname = new URL(req.url, 'http://localhost').pathname;
-    if (req.method==='GET' && pathname==='/api/health') return json(res,200,{ok:true,mode:'sandbox',paypalConfigured:Boolean(CLIENT_ID&&CLIENT_SECRET),principle:'AI investigates. Humans decide.'});
+    if (req.method==='GET' && pathname==='/api/health') return json(res,200,{ok:true,mode:'sandbox',paypalConfigured:Boolean(CLIENT_ID&&CLIENT_SECRET),approvalConfigured:Boolean(ADMIN_API_TOKEN&&Buffer.byteLength(ADMIN_API_TOKEN)>=32),principle:'AI investigates. Humans decide.'});
+    if ((pathname==='/api/audit' || pathname==='/api/decision') && !authorised(req)) return json(res,401,{error:'Operator authorisation required'});
     if (req.method==='GET' && pathname==='/api/audit') return json(res,200,{records});
     if (req.method==='POST' && pathname==='/api/decision') {
       const b=await body(req); const decision=String(b.decision||'').toUpperCase();
@@ -54,3 +65,4 @@ const server = http.createServer(async (req,res)=>{
   } catch(e) { json(res,500,{error:e.message}); }
 });
 server.listen(PORT,()=>console.log(`Palm92 Verified Pay listening on ${PORT}`));
+
