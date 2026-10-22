@@ -22,13 +22,18 @@ function values() {
     decision:$('decision').value,decisionNote:$('decisionNote').value,redactName:$('redactName').value,redactPhone:$('redactPhone').value};
 }
 function showSummary() {
-  const v=values(); $('statusMeaning').textContent=statusDescriptions[v.status];
-  $('summary').innerHTML=`<strong>${v.status}</strong><p>${statusDescriptions[v.status]}</p><p>${v.sources.length} authoritative source(s) marked as checked by you. ScamShield does not browse or verify them automatically.</p><p><b>Human decision:</b> ${v.decision || 'Pending'}</p>`;
+  const v=values(); const validation=C.validateCase(v); $('statusMeaning').textContent=statusDescriptions[v.status];
+  const readiness=validation.valid ? '<p><b>Export ready:</b> required evidence and human-review fields are recorded.</p>' : `<p><b>Export not ready:</b> ${validation.errors.join(' ')}</p>`;
+  $('summary').innerHTML=`<strong>${v.status}</strong><p>${statusDescriptions[v.status]}</p><p>${v.sources.length} authoritative source(s) marked as checked by you. ScamShield does not browse or verify them automatically.</p><p><b>Human decision:</b> ${v.decision || 'Pending'}</p>${readiness}`;
 }
 function downloadPack() {
-  const pack=C.buildPack(values()); const blob=new Blob([JSON.stringify(pack,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='palm92-scamshield-evidence-pack.json'; a.click(); URL.revokeObjectURL(url);
-  $('toast').textContent='Evidence Pack downloaded. Review the redacted copy before sharing it.';
+  try {
+    const pack=C.buildPack(values()); const blob=new Blob([JSON.stringify(pack,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='palm92-scamshield-evidence-pack.json'; a.click(); URL.revokeObjectURL(url);
+    $('toast').textContent='Evidence Pack downloaded. Review the redacted copy before sharing it.';
+  } catch (error) {
+    $('toast').textContent=`Evidence Pack not downloaded. ${error.message}`;
+  }
 }
 function loadCase() {
   activeMode='social'; renderModes(); $('modeLabel').textContent='Social / WhatsApp';
