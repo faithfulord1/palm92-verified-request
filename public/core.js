@@ -28,7 +28,29 @@
       .replace(/https?:\/\/chat\.whatsapp\.com\/[^\s]+/gi, '[REDACTED INVITE LINK]')
       .replace(/\b(?:https?:\/\/)?(?:www\.)?[^\s/]+\.(?:com|co\.uk|org|net|io)\/[^\s]*/gi, '[REDACTED LINK]');
   }
+  function validateCase(input = {}) {
+    const errors = [];
+    const modeIds = MODES.map(([id]) => id);
+    const checkedSources = (input.sources || []).filter(source => source && source.checked === true);
+    const documentedSources = checkedSources.filter(source => String(source.note || '').trim());
+    if (!modeIds.includes(input.mode)) errors.push('Choose a valid ScamShield mode.');
+    if (!STATUSES.includes(input.status)) errors.push('Choose a valid evidence status.');
+    if (!String(input.claim || '').trim()) errors.push('Record the claim before exporting.');
+    if (!String(input.evidence || '').trim()) errors.push('Record what the evidence actually proves before exporting.');
+    if (!String(input.decision || '').trim()) errors.push('Record a human decision before exporting.');
+    if (['VERIFIED RISK', 'NO MATERIAL RISK DETECTED'].includes(input.status) && documentedSources.length === 0) {
+      errors.push(`${input.status} requires at least one authoritative source marked as checked with a note describing what was confirmed.`);
+    }
+    return {valid: errors.length === 0, errors};
+  }
   function buildPack(input) {
+    const validation = validateCase(input);
+    if (!validation.valid) {
+      const error = new Error(validation.errors.join(' '));
+      error.name = 'ScamShieldValidationError';
+      error.errors = validation.errors;
+      throw error;
+    }
     const privateValues = [input.redactName, input.redactPhone].filter(Boolean);
     const clean = v => redact(v, privateValues);
     return {
@@ -52,7 +74,7 @@
       'NO MATERIAL RISK DETECTED':'Checks found no material warning signs. This is not a guarantee of safety.'
     }[status] || 'Choose a status only after reviewing evidence and limitations.';
   }
-  const api = {STATUSES, MODES, SOURCES, redact, buildPack, statusMeaning};
+  const api = {STATUSES, MODES, SOURCES, redact, validateCase, buildPack, statusMeaning};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.ScamShieldCore = api;
 })(typeof window !== 'undefined' ? window : globalThis);
