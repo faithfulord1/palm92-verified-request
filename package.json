@@ -1,7 +1,13 @@
 {
-  "name": "palm92-verified-pay",
-  "version": "0.1.0",
+  "name": "palm92-scamshield",
+  "version": "1.0.0",
   "private": true,
-  "scripts": {"start": "node server.js"},
-  "engines": {"node": ">=18"}
+  "description": "Privacy-first, evidence-led scam request verification",
+  "scripts": {
+    "test": "node --test",
+    "start": "node preview-server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }
