@@ -24,3 +24,13 @@ test('sanitised Case Study 001 avoids private identity material', () => {
   assert.match(html, /299 strangers/); assert.match(app, /£200 would supposedly become £4,000/);
   assert.doesNotMatch(html+app, /\+44\s?7\d{3}|@|chat\.whatsapp\.com\//);
 });
+test('local preview server blocks path traversal and sets security headers', async () => {
+  const {spawn} = require('node:child_process'); const port=3217;
+  const child=spawn(process.execPath,['preview-server.js'],{env:{...process.env,PORT:String(port)},stdio:'ignore'});
+  try {
+    let home; for(let i=0;i<30;i++){try{home=await fetch(`http://127.0.0.1:${port}/`);break}catch{await new Promise(r=>setTimeout(r,50));}}
+    assert.equal(home.status,200); assert.match(home.headers.get('content-security-policy'),/connect-src 'none'/);
+    const blocked=await fetch(`http://127.0.0.1:${port}/%2e%2e/package.json`); assert.ok([403,404].includes(blocked.status));
+    const post=await fetch(`http://127.0.0.1:${port}/`,{method:'POST'}); assert.equal(post.status,405);
+  } finally {child.kill();}
+});
