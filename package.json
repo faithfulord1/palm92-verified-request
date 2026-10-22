@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "Privacy-first, evidence-led scam request verification",
-  "scripts": {"test": "node --test", "start": "node -e \"require('http').createServer((q,s)=>require('fs').createReadStream('public'+(q.url==='/'?'/index.html':q.url.split('?')[0])).on('error',()=>{s.statusCode=404;s.end()}).pipe(s)).listen(process.env.PORT||3000)\""},
-  "engines": {"node": ">=20"}
+  "scripts": {
+    "test": "node --test",
+    "start": "node preview-server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }
