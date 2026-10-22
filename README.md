@@ -1,117 +1,35 @@
-# Palm92 Verified Request
+# Palm92 ScamShield
 
-**Verify before you act.**
+Privacy-first, evidence-led request checking for six modes: Social / WhatsApp ScamShield, JobShield, PropertyShield, Community Safety, Small Business Fraud Shield, and Check Before I Pay.
 
-Palm92 Verified Request is an evidence-first verification platform for confirming whether high-risk requests, payments, donation appeals, emergency messages and organisational actions were genuinely authorised before people act.
+**Don’t trust the screenshot. Verify the request.**  
+**AI investigates. Humans decide.**
 
-## The problem
+## What it does
 
-People increasingly receive believable messages through WhatsApp, email, social media, voice notes and video. A message can look authentic, use a trusted person's name or image, and still ask the recipient to send money, disclose information or take an unsafe action.
+- Guides people through **STOP → VERIFY → DECIDE**.
+- Captures claims, requests, observed indicators, source-check notes, an evidence status, and a human decision.
+- Generates a JSON Evidence Pack with clear evidence limitations and automatic redaction for email addresses, phone numbers, invite links, URLs, and user-specified names/numbers.
+- Provides links to authoritative UK sources. The user opens and checks each source; the app does not pretend that it queried those sources.
+- Supports four evidence statuses: VERIFIED RISK, LIKELY RISK, INSUFFICIENT EVIDENCE, and NO MATERIAL RISK DETECTED.
+- Keeps the case in the browser session. There is no account, upload, analytics, remote API, cookie, or server-side case storage.
+- Includes only the sanitised Case Study 001: “299 strangers / £200 supposedly becomes £4,000.” It contains no private identities, phone numbers, faces, invite links or group screenshots.
 
-Generic deepfake detection asks:
+## Run locally
 
-> "Was this media manipulated?"
-
-Palm92 Verified Request asks a more actionable question:
-
-> **"Did the real organisation actually authorise this exact request?"**
-
-## Core principle
-
-The AI is not the source of truth.
-
-AI may extract claims, identify entities, classify risk, summarise evidence and orchestrate checks. Final authorisation status is determined against trusted organisational records, approved channels and explicit verification rules.
-
-## Initial MVP
-
-1. **Organisation Registry**  
-   Register official domains, phone numbers, social accounts, payment destinations and authorised administrators.
-
-2. **Authorised Request Creator**  
-   Issue a high-risk request with a unique verification ID and QR code.
-
-3. **Public Verification**  
-   Let anyone enter a verification ID, paste a message or submit a suspicious request for checking.
-
-4. **Evidence-based Result**  
-   Return one of:
-   - VERIFIED
-   - NOT VERIFIED
-   - CONFLICT
-   - INSUFFICIENT EVIDENCE
-
-5. **Incident Evidence Pack**  
-   Preserve the claim, source, timestamps, extracted facts, registry comparison and relevant evidence.
-
-6. **Human Review**  
-   Escalate uncertain or high-impact cases to an authorised reviewer.
-
-## Safe agentic workflow
-
-```text
-Input
-  ↓
-Extract claim + requested action
-  ↓
-Identify organisation / person / destination
-  ↓
-Check official registry
-  ↓
-Check authorised request record
-  ↓
-Compare payment / contact / channel details
-  ↓
-Gather supporting evidence
-  ↓
-Deterministic verification rules
-  ↓
-Explain result + confidence / uncertainty
-  ↓
-Human review when required
+```sh
+npm test
+npm start
 ```
 
-## API and MCP
+Then visit `http://localhost:3000`. The app is static HTML/CSS/JS and can be deployed on Vercel or any static host. Node is used only for the local preview command and test suite.
 
-The project is designed to expose a versioned REST API and a Model Context Protocol server so other applications and AI agents can verify requests safely.
+## Safety and limitations
 
-Planned MCP tools include:
+A screenshot can establish that a claim was made, not that it is true. Display names and phone numbers do not prove who controlled an account. `VERIFIED RISK` requires direct authoritative evidence about the proposition. `NO MATERIAL RISK DETECTED` is not a guarantee. ScamShield does not identify criminals, contact suspects, test illicit goods, make reports, approve payments or decide for the user. Never use it to facilitate counterfeit production, card cloning or other fraud.
 
-- `verify_request`
-- `lookup_official_channel`
-- `check_payment_destination`
-- `create_authorised_request`
-- `get_verification_record`
-- `prepare_incident_evidence_pack`
-- `request_human_review`
+The Evidence Pack is a user-created export, not a tamper-proof forensic record. Review it before sharing. The source links are conveniences, not proof that a check was completed.
 
-## First validation markets
+## Deployment
 
-The first validation wedge is churches and ministries, charities and community organisations where trust is high and impersonation can cause immediate financial or reputational harm.
-
-The underlying infrastructure is intentionally broader so it can later support schools, SMEs, recruitment, creators and other high-trust environments.
-
-## Safety and governance
-
-- Never claim certainty when evidence is insufficient.
-- Never let an LLM independently decide whether a payment or high-impact request is authorised.
-- Keep consequential actions behind human approval.
-- Preserve provenance and an audit trail.
-- Minimise personal data.
-- Make deletion and retention controls explicit.
-- Measure false positives and false negatives.
-- Separate verified organisational records from AI-generated interpretation.
-
-## Hackathon thesis
-
-**Most tools try to detect whether content is fake. Palm92 verifies whether the requested action was authorised.**
-
-That makes the product useful even when a message was written by a human, copied from a real account, or generated with AI.
-
-## Status
-
-Hackathon MVP and market-validation stage.
-
----
-
-**Palm92 Intelligence**  
-Evidence before action.
+Vercel configuration is in `vercel.json`. Production is not considered complete until the public URL has been opened and checked against the acceptance criteria, including the public demo's privacy content and Evidence Pack behavior.
