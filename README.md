@@ -32,4 +32,4 @@ The Evidence Pack is a user-created export, not a tamper-proof forensic record. 
 
 ## Deployment
 
-Vercel configuration is in `vercel.json`. Production is not considered complete until the public URL has been opened and checked against the acceptance criteria, including the public demo's privacy content and Evidence Pack behavior.
+GitHub Pages is the zero-cost Plan B for this static app and is available for public repositories on GitHub Free. The `.github/workflows/pages.yml` workflow publishes the `public/` directory from `feat/scamshield-case001` and can later publish from `main` after merge. Verify the GitHub repository Pages setting and the Actions deployment result; production is not considered complete until the public URL has been opened and checked against the acceptance criteria, including the public demo privacy content and Evidence Pack behavior. GitHub Pages does not let this repository set HTTP response headers, so the page includes a restrictive CSP meta policy and the application avoids remote scripts, APIs, analytics, cookies, and server-side case storage.
