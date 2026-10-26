@@ -18,7 +18,7 @@ function values() {
   const checked = [...document.querySelectorAll('[data-source]:checked')].map(el => Number(el.dataset.source));
   return {mode:activeMode,title:$('title').value,claim:$('claim').value,request:$('request').value,evidence:$('evidence').value,
     indicators:[...document.querySelectorAll('[data-indicator]:checked')].map(el=>el.value),status:$('status').value,
-    sources:checked.map(i=>({name:C.SOURCES[i][0],url:C.SOURCES[i][1],checked:true,note:$(`[data-note="${i}"]`).value})),
+    sources:checked.map(i=>({name:C.SOURCES[i][0],url:C.SOURCES[i][1],checked:true,note:document.querySelector(`[data-note="${i}"]`).value})),
     decision:$('decision').value,decisionNote:$('decisionNote').value,redactName:$('redactName').value,redactPhone:$('redactPhone').value};
 }
 function showSummary() {
