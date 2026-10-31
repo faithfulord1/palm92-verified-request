@@ -48,27 +48,7 @@ AI may extract claims, identify entities, classify risk, summarise evidence and 
 
 ## Safe agentic workflow
 
-```text
-Input
-  ↓
-Extract claim + requested action
-  ↓
-Identify organisation / person / destination
-  ↓
-Check official registry
-  ↓
-Check authorised request record
-  ↓
-Compare payment / contact / channel details
-  ↓
-Gather supporting evidence
-  ↓
-Deterministic verification rules
-  ↓
-Explain result + confidence / uncertainty
-  ↓
-Human review when required
-```
+Input → Extract claim + requested action → Identify organisation / person / destination → Check official registry → Check authorised request record → Compare payment / contact / channel details → Gather supporting evidence → Apply deterministic verification rules → Explain result + uncertainty → Human review when required
 
 ## API and MCP
 
@@ -76,13 +56,13 @@ The project is designed to expose a versioned REST API and a Model Context Proto
 
 Planned MCP tools include:
 
-- `verify_request`
-- `lookup_official_channel`
-- `check_payment_destination`
-- `create_authorised_request`
-- `get_verification_record`
-- `prepare_incident_evidence_pack`
-- `request_human_review`
+- verify_request
+- lookup_official_channel
+- check_payment_destination
+- create_authorised_request
+- get_verification_record
+- prepare_incident_evidence_pack
+- request_human_review
 
 ## First validation markets
 
@@ -110,6 +90,10 @@ That makes the product useful even when a message was written by a human, copied
 ## Status
 
 Hackathon MVP and market-validation stage.
+
+## Public showcase
+
+The [Palm92 ScamShield showcase](showcase/README.md) includes a sanitized campaign poster and a free-first AI workflow playbook for using open-source and AI tools responsibly. It is supporting material, not a claim that every pictured integration or bot is deployed.
 
 ---
 
