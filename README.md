@@ -115,3 +115,7 @@ Hackathon MVP and market-validation stage.
 
 **Palm92 Intelligence**  
 Evidence before action.
+
+## Public showcase
+
+The [Palm92 ScamShield showcase](showcase/README.md) includes a sanitized campaign poster and a free-first AI workflow playbook. It is supporting material, not a claim that every pictured integration or bot is deployed.
