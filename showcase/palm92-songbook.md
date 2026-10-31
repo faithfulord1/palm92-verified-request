@@ -255,3 +255,19 @@ This song is a hug in a rhythm you know.
 ## Free-use and accuracy note
 
 Suno currently lists a free plan with daily credits and no commercial-use rights. Check its live [pricing page](https://suno.com/pricing) and [terms](https://suno.com/terms) before generating or sharing any tracks. Lyrics and prompts can be reused independently; do not publish Suno free-tier audio as commercial Palm92 promotion without confirming the rights that apply. For cyber and rail learning, have a qualified person check the final lyrics against the current approved guidance before using them as training material.
+
+
+## Generated Suno tracks
+
+These tracks were generated in Faith's signed-in Suno account on the free plan and saved in its library. Suno produced two full V6-MINI mixes for each prompt. These are account-library links; the songs have not been published from Suno. Suno's free plan showed no commercial-use rights, so use these for private review and non-commercial demonstration only unless Suno's current terms later grant different rights. Do not use them in paid Palm92 promotion or monetised content without confirming the applicable licence.
+
+| Palm92 theme | Mix 1 | Mix 2 |
+|---|---|---|
+| ScamShield — Before the Money Moves | [Listen](https://suno.com/song/4a0d28cf-f462-4724-b517-e757d22f5a6b) | [Listen](https://suno.com/song/12dff30c-89e0-4250-aef7-4ceff9b462f4) |
+| Employment — My Next Chapter | [Listen](https://suno.com/song/22fb1666-0eee-47c6-879c-ae11bafb4b7a) | [Listen](https://suno.com/song/6833dfa6-6a97-4eea-99e3-5c2422db09ee) |
+| Learning — Know Your Role | [Listen](https://suno.com/song/4e16279b-e66e-4200-9d09-2ccb0efe2749) | [Listen](https://suno.com/song/ddad28cf-bec1-4061-b437-c5ebb0826dba) |
+| Church and community — Many Hands, One Heart | [Listen](https://suno.com/song/61974b4a-e2c8-4e69-9a7e-03ede60a9101) | [Listen](https://suno.com/song/203b4749-a936-40ed-9597-ce39d6caa292) |
+| Palm92 video — Proof in the Rhythm | [Listen](https://suno.com/song/2c9e2d06-92dd-41de-8336-cecc94d62c19) | [Listen](https://suno.com/song/b4f6d531-75a8-482b-b696-602c6f84fe3e) |
+| Personal outreach — A Little Thank You | [Listen](https://suno.com/song/06b5a276-f591-44ca-95be-725695e2cb14) | [Listen](https://suno.com/song/664a91cf-f639-43fb-9770-3172440b4130) |
+
+The outreach lyric is intentionally generic. Add a person's name, story, voice, or other identifying details only with their consent. The learning track is a memory aid, not approved cybersecurity or railway operating instruction; check any teaching version against current authoritative guidance.
