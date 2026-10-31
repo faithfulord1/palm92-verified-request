@@ -48,7 +48,25 @@ AI may extract claims, identify entities, classify risk, summarise evidence and 
 
 ## Safe agentic workflow
 
-Input → Extract claim + requested action → Identify organisation / person / destination → Check official registry → Check authorised request record → Compare payment / contact / channel details → Gather supporting evidence → Apply deterministic verification rules → Explain result + uncertainty → Human review when required
+Input  
+  ↓  
+Extract claim + requested action  
+  ↓  
+Identify organisation / person / destination  
+  ↓  
+Check official registry  
+  ↓  
+Check authorised request record  
+  ↓  
+Compare payment / contact / channel details  
+  ↓  
+Gather supporting evidence  
+  ↓  
+Deterministic verification rules  
+  ↓  
+Explain result + confidence / uncertainty  
+  ↓  
+Human review when required
 
 ## API and MCP
 
@@ -91,11 +109,11 @@ That makes the product useful even when a message was written by a human, copied
 
 Hackathon MVP and market-validation stage.
 
-## Public showcase
-
-The [Palm92 ScamShield showcase](showcase/README.md) includes a sanitized campaign poster and a free-first AI workflow playbook for using open-source and AI tools responsibly. It is supporting material, not a claim that every pictured integration or bot is deployed.
-
 ---
 
 **Palm92 Intelligence**  
 Evidence before action.
+
+## Public showcase
+
+The [Palm92 ScamShield showcase](showcase/README.md) includes a sanitized campaign poster and a free-first AI workflow playbook. It is supporting material, not a claim that every pictured integration or bot is deployed.
