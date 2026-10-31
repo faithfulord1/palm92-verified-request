@@ -6,4 +6,5 @@
 
 This poster supports the Palm92 ScamShield free-first AI workflow playbook. The examples are fictional and sanitized. The playbook is a workflow blueprint; it does not claim that the illustrated tools or privacy-removal bots are already deployed.
 
-[Read the free-first AI workflow playbook](free-first-ai-workflow.md)
+- [Read the free-first AI workflow playbook](free-first-ai-workflow.md)
+- [Read the LinkedIn post draft](linkedin-post-draft.md)
