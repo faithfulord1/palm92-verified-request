@@ -76,13 +76,13 @@ The project is designed to expose a versioned REST API and a Model Context Proto
 
 Planned MCP tools include:
 
-- ```verify_request```
-- ```lookup_official_channel```
-- ```check_payment_destination```
-- ```create_authorised_request```
-- ```get_verification_record```
-- ```prepare_incident_evidence_pack```
-- ```request_human_review```
+- `verify_request`
+- `lookup_official_channel`
+- `check_payment_destination`
+- `create_authorised_request`
+- `get_verification_record`
+- `prepare_incident_evidence_pack`
+- `request_human_review`
 
 ## First validation markets
 
