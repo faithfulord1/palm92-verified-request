@@ -1,7 +1,11 @@
 {
-  "name": "palm92-verified-pay",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {"start": "node server.js"},
+  "name": "palm92-open-verification-engine",
+  "version": "0.2.0",
+  "private": false,
+  "description": "Evidence-first human-in-the-loop verification engine for high-risk digital requests.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/verification-engine.test.js"
+  },
   "engines": {"node": ">=18"}
 }
