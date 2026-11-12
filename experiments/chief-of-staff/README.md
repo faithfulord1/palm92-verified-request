@@ -7,7 +7,8 @@ A local-first project manager prototype: one Chief turns a brief into a short pl
 - Python standard-library server bound to `127.0.0.1` only.
 - Planning through the local Ollama API, with Qwen as the default model (`qwen2.5:7b`).
 - Persistent local JSON state for projects and tasks.
-- Four reviewable board stages, plus Blocked.
+- Five visible board stages: Proposed, In progress, Review, Approved, and Blocked.
+- Role-based worker drafts run through the same local Ollama model and return to the Review column.
 - No shell execution, outbound messaging, account connectors, or publishing.
 - Prompts are not written to request logs.
 
@@ -22,10 +23,10 @@ The server never binds to a public network interface. Keep the browser on the sa
 
 ## Design boundary
 
-This is a prototype board, not an autonomous agent swarm. Role labels identify the kind of work a task needs; the prototype does not secretly launch external agents. A later version can add supported connectors and isolated workers after defining permissions, authentication, data retention, and audit records. Claude/OpenAI consumer subscriptions are not automatically API credentials; a supported local CLI or API path would need separate implementation and verification.
+This prototype keeps one Chief as the only user-facing agent. Role-based workers draft one task at a time through Ollama; they do not run in parallel or secretly launch external agents. Every result returns to Review. There is no shell execution, messaging, publishing, or account connector. Claude/OpenAI consumer subscriptions are not automatically API credentials; a supported local CLI or API path would need separate implementation and verification.
 
 ## Workflow contract
 
 `Request → Plan → Assign → Review → Human approval → Action → Evidence`
 
-Only the first three stages are implemented here. The board makes review visible; no consequential action is automatic.
+Planning, bounded worker drafts, task tracking, and human review are implemented. External action and evidence connectors are not. No consequential action is automatic.
