@@ -11,6 +11,7 @@ A local-first project manager prototype: one Chief turns a brief into a short pl
 - Role-based worker drafts run through the same local Ollama model and return to the Review column.
 - No shell execution, outbound messaging, account connectors, or publishing.
 - Prompts are not written to request logs.
+- Cross-origin POST requests are rejected.
 
 ## Run it on the computer that runs Ollama
 
