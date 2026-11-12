@@ -33,7 +33,7 @@ def write_state(state):
     tmp.replace(STATE)
 
 def ask_ollama(project):
-    prompt = f"""You are PALM92 Chief, one project manager for Faith. Turn this project into a small, practical work plan.
+    prompt = f"""You are PALM92 Chief, one project manager. Turn this project into a small, practical work plan.
 Return ONLY valid JSON with keys summary and tasks. summary is one sentence. tasks is an array of 4 to 7 objects with keys title, role, purpose, acceptance_criteria, risk, status. role must be one of Research, Design, Build, Review. status must be Proposed. Keep tasks independent where possible, sequence dependencies in purpose, avoid invented facts, do not perform external actions. The human is the project manager and approves consequential actions.
 Project brief: {project}
 """
@@ -49,6 +49,24 @@ Project brief: {project}
     if not isinstance(result.get("tasks"), list) or not result["tasks"]:
         raise ValueError("Ollama returned no task list")
     return result
+
+def work_task(task):
+    prompt = f"""You are the {task.get('role', 'Build')} worker supporting PALM92 Chief.
+Produce a useful draft or research result for this task. Return plain text with: Output, Evidence or assumptions, and Open questions. Keep claims grounded in the supplied brief. Do not claim you performed actions outside this app, and do not ask for or expose credentials. This output is a draft for human review.
+Task: {task.get('title', '')}
+Purpose: {task.get('purpose', '')}
+Acceptance criteria: {task.get('acceptance_criteria', '')}
+Project brief: {task.get('project_brief', '')}
+"""
+    body = json.dumps({"model": MODEL, "stream": False, "messages": [
+        {"role": "system", "content": "You create bounded work drafts. Never execute tools or external actions."},
+        {"role": "user", "content": prompt}
+    ]}).encode()
+    req = urllib.request.Request(OLLAMA_URL.rstrip("/") + "/api/chat", data=body,
+                                 headers={"Content-Type": "application/json"}, method="POST")
+    with urllib.request.urlopen(req, timeout=240) as response:
+        raw = json.loads(response.read())
+    return str(raw["message"]["content"]).strip()
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
@@ -128,6 +146,28 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(400, {"error": "Invalid status"})
                 return
             task["status"] = body["status"]
+            write_state(state)
+            self.send_json(200, task)
+            return
+        if self.path == "/api/work-task":
+            state = read_state()
+            task = next((t for t in state["tasks"] if t["id"] == body.get("id")), None)
+            if not task:
+                self.send_json(404, {"error": "Task not found"})
+                return
+            if task.get("status") not in ["Proposed", "In progress"]:
+                self.send_json(409, {"error": "Only Proposed or In progress tasks can be sent to a worker."})
+                return
+            project = next((p for p in state["projects"] if p["id"] == task["project_id"]), {})
+            try:
+                task["work_output"] = work_task({**task, "project_brief": project.get("brief", "")})
+            except urllib.error.URLError:
+                self.send_json(503, {"error": f"Local Ollama is not reachable at {OLLAMA_URL}. Start Ollama and check the model name ({MODEL})."})
+                return
+            except Exception as e:
+                self.send_json(502, {"error": f"Worker draft failed: {type(e).__name__}: {e}"})
+                return
+            task["status"] = "Review"
             write_state(state)
             self.send_json(200, task)
             return
