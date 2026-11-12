@@ -15,7 +15,7 @@ A local-first project manager prototype: one Chief turns a brief into a short pl
 ## Run it on the computer that runs Ollama
 
 1. Install Python 3.10+ and Ollama. Pull a model that fits the machine, for example `ollama pull qwen2.5:7b`.
-2. From this directory run `python3 server.py`.
+2. From this directory run `./start_local.sh` on macOS/Linux, or double-click `start_windows.bat` on Windows. You can also run `python3 server.py`.
 3. Open `http://127.0.0.1:8765` in a browser on that same computer.
 4. To select another Ollama model: `OLLAMA_MODEL=qwen3:8b python3 server.py`.
 
