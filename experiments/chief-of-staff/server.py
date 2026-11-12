@@ -105,6 +105,11 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_POST(self):
+        origin = self.headers.get("Origin")
+        allowed_origins = {f"http://{HOST}:{PORT}", f"http://localhost:{PORT}"}
+        if origin and origin not in allowed_origins:
+            self.send_json(403, {"error": "Cross-origin requests are not allowed."})
+            return
         try:
             body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", "0"))))
         except (ValueError, OSError):
